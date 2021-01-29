@@ -7,7 +7,9 @@ document.onload =  display.value = 0;
 
 // for(let i=0;i<buttons.length;i++){
     // button = buttons[i]; 
-
+    
+    //Using event delegation
+    let dotUsed = false;
     buttonsContainer.addEventListener("click", function(event){
         let n = event.target.value;
         
@@ -25,26 +27,51 @@ document.onload =  display.value = 0;
                 resultDisplay.innerText = "Invalid input";
                 userInput = '';
             }
+            dotUsed = false;
         }
+        
         else if(n === 'backSpace'){
             let x = userInput.slice(0, -1);
             userInput = x;
             display.value = userInput;
         }
-        else if(event.target.classList[0] === "btn"){
-            userInput += n;
+        else if(n === 'π'){
+            userInput += '*'+n;
             display.value = userInput;
+        }
+        else if(event.target.classList[0] === "btn"){
+            if(n === '.' && !dotUsed){
+                userInput += n;
+                display.value = userInput;
+                dotUsed = true;
+            }
+            if(event.target.classList[1] === 'btnSymbol'){
+                dotUsed = false;
+            }
+            if(n !== '.'){
+                userInput += n;
+                display.value = userInput;
+            }
         }
     });
 // }
 
+//press and hold backspace to clear
+window.addEventListener('mousedown', function(event) {
+  setTimeout(function() {
+    if(event.target.value === 'backSpace'){
+        userInput = 0;
+        display.value = userInput;
+    }
+  }, 800);
 
+});
 
 
 
 function calculator(userInput){
 
-    let numberRegex = /(\d+)/g;
+    let numberRegex = /(\d+(\.\d+)?)/g;
     let signRegex = /[\*\/+-]/g;
 
     //Extracting numbers and signs from string
