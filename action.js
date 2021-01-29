@@ -2,6 +2,8 @@ let buttonsContainer = document.querySelector(".buttons");
 let display = document.querySelector("#display");
 let resultDisplay = document.querySelector("#result_display");
 let userInput = "";
+let dotUsed = false;
+let symbolUsed = false;
 
 document.onload =  display.value = 0;
 
@@ -9,10 +11,10 @@ document.onload =  display.value = 0;
     // button = buttons[i]; 
     
     //Using event delegation
-    let dotUsed = false;
     buttonsContainer.addEventListener("click", function(event){
         let n = event.target.value;
         
+        //For equal key
         if(n === '='){
             console.log(userInput);
 
@@ -28,27 +30,39 @@ document.onload =  display.value = 0;
                 userInput = '';
             }
             dotUsed = false;
+            symbolUsed = false;
         }
-        
+
+        //For backspace key
         else if(n === 'backSpace'){
             let x = userInput.slice(0, -1);
             userInput = x;
             display.value = userInput;
         }
+        //For pi
         else if(n === 'π'){
             userInput += '*'+n;
             display.value = userInput;
         }
+
+        //for numbers, dot and symbols
         else if(event.target.classList[0] === "btn"){
+            //dot
             if(n === '.' && !dotUsed){
                 userInput += n;
                 display.value = userInput;
                 dotUsed = true;
             }
+            //symbols
             if(event.target.classList[1] === 'btnSymbol'){
+                //If previous input was a symbol
+                if(/[\*\/+-]/.test(userInput[userInput.length-1])){
+                    symbolUsed = true;
+                }
                 dotUsed = false;
             }
-            if(n !== '.'){
+            //Numbers
+            if(n !== '.' && !symbolUsed){
                 userInput += n;
                 display.value = userInput;
             }
@@ -57,15 +71,15 @@ document.onload =  display.value = 0;
 // }
 
 //press and hold backspace to clear
-window.addEventListener('mousedown', function(event) {
-  setTimeout(function() {
-    if(event.target.value === 'backSpace'){
-        userInput = 0;
-        display.value = userInput;
-    }
-  }, 800);
+// window.addEventListener('mousedown', function(event) {
+//   setTimeout(function() {
+//     if(event.target.value === 'backSpace'){
+//         userInput = 0;
+//         display.value = userInput;
+//     }
+//   }, 800);
 
-});
+// });
 
 
 
