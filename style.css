@@ -67,7 +67,7 @@ box-shadow:  6px 6px 12px #212121,
     height: 50px;
     width: 100%;
     text-align: center;
-    overflow-y: scroll;
+    overflow-y: auto;
     border: none;
 }
 .display_container{

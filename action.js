@@ -3,34 +3,33 @@ let display = document.querySelector("#display");
 let resultDisplay = document.querySelector("#result_display");
 let userInput = "";
 let dotUsed = false;
-let symbolUsed = false;
 
-document.onload =  display.value = 0;
+document.onload =  display.value = 'Hi!';
 
 // for(let i=0;i<buttons.length;i++){
     // button = buttons[i]; 
-    
+    let PreviousResult = 0;
     //Using event delegation
     buttonsContainer.addEventListener("click", function(event){
         let n = event.target.value;
-        
+        resultDisplay.innerText = 0;
         //For equal key
         if(n === '='){
             console.log(userInput);
 
             if(userInput == ''){
-                display.value = 0;
+                display.value = 'Hi!';
             }
-            else if(userInput[0].match(/[\d+-]/)){
-                resultDisplay.innerText = calculator(userInput);
+            else if(userInput[0].match(/[\d+-]/) && /[\d]/.test(userInput[userInput.length-1])){
+                let result = calculator(userInput);
+                resultDisplay.innerText = result;
+                PreviousResult = result;
                 userInput = '';
             }
             else{
-                resultDisplay.innerText = "Invalid input";
-                userInput = '';
+                resultDisplay.innerText = "Syntax Error!";
             }
             dotUsed = false;
-            symbolUsed = false;
         }
 
         //For backspace key
@@ -41,14 +40,15 @@ document.onload =  display.value = 0;
         }
         //For pi
         else if(n === 'π'){
-            userInput += '*'+n;
-            display.value = userInput;
+            // userInput += '*'+n;
+            // display.value = userInput;
         }
 
         //for numbers, dot and symbols
         else if(event.target.classList[0] === "btn"){
             //dot
-            if(n === '.' && !dotUsed){
+            //If previously dot not used and there is at least one digit before it
+            if(n === '.' && /\d/.test(userInput[userInput.length-1]) && !dotUsed){
                 userInput += n;
                 display.value = userInput;
                 dotUsed = true;
@@ -56,13 +56,21 @@ document.onload =  display.value = 0;
             //symbols
             if(event.target.classList[1] === 'btnSymbol'){
                 //If previous input was a symbol
-                if(/[\*\/+-]/.test(userInput[userInput.length-1])){
-                    symbolUsed = true;
+                if(/[\*\/+-.]/.test(userInput[userInput.length-1]) ){
+                    
                 }
-                dotUsed = false;
+                else if(userInput === '' && /[\*\/+-]/.test(n)){
+                    userInput = PreviousResult + n;
+                    display.value = userInput;
+                }
+                else{
+                    userInput += n;
+                    display.value = userInput;
+                    dotUsed = false;
+                }
             }
             //Numbers
-            if(n !== '.' && !symbolUsed){
+            else if(n !== '.'){
                 userInput += n;
                 display.value = userInput;
             }
@@ -85,7 +93,7 @@ document.onload =  display.value = 0;
 
 function calculator(userInput){
 
-    let numberRegex = /(\d+(\.\d+)?)/g;
+    let numberRegex = /(\d+!?(\.\d+)?)/g;
     let signRegex = /[\*\/+-]/g;
 
     //Extracting numbers and signs from string
@@ -101,10 +109,14 @@ function calculator(userInput){
     else if(userInput[0] === '+'){
         signs.shift();
     }
+    else if(signs === null){
+        signs = ['+'];
+    }
     
 
     //First calculate the multiplies and divisions
     for(let i=0;i<numbers.length;i++){
+        
         //if a number is negative
         if(signs[i] === '-'){
             numbers[i+1] *= (-1);
@@ -130,3 +142,18 @@ function calculator(userInput){
     return sum;
     
 }
+
+
+function factorial(n){
+    n = Number(n);
+    if(!Number.isInteger(n)){
+        return false;
+    }
+
+    let fact = 1;
+    for(let i = 1; i <= n; i++){
+        fact *= i;
+    }
+    return fact;
+}
+
