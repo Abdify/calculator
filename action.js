@@ -2,7 +2,7 @@ let buttonsContainer = document.querySelector(".buttons");
 let display = document.querySelector("#display");
 let resultDisplay = document.querySelector("#result_display");
 let userInput = "";
-let dotUsed = false;
+
 
 document.onload =  display.value = 'Hi!';
 
@@ -20,16 +20,15 @@ document.onload =  display.value = 'Hi!';
             if(userInput == ''){
                 display.value = 'Hi!';
             }
-            else if(userInput[0].match(/[\d+-]/) && /[\d]/.test(userInput[userInput.length-1])){
+            else if(!isError(userInput)){
                 let result = calculator(userInput);
                 resultDisplay.innerText = result;
                 PreviousResult = result;
                 userInput = '';
             }
             else{
-                resultDisplay.innerText = "Syntax Error!";
+                resultDisplay.innerText = "You're bad at math😑";
             }
-            dotUsed = false;
         }
 
         //For backspace key
@@ -47,30 +46,27 @@ document.onload =  display.value = 'Hi!';
         //for numbers, dot and symbols
         else if(event.target.classList[0] === "btn"){
             //dot
-            //If previously dot not used and there is at least one digit before it
-            if(n === '.' && /\d/.test(userInput[userInput.length-1]) && !dotUsed){
-                userInput += n;
-                display.value = userInput;
-                dotUsed = true;
-            }
+
             //symbols
-            if(event.target.classList[1] === 'btnSymbol'){
-                //If previous input was a symbol
-                if(/[\*\/+-.]/.test(userInput[userInput.length-1]) ){
+            //if(event.target.classList[1] === 'btnSymbol'){
+                if(userInput === '' && /[\*\/+-]/.test(n)){
+                    if(display.value === ''){
+                        userInput += n;
+                        display.value = userInput;
+                    }
+                    else{
+                        userInput = PreviousResult + n;
+                        display.value = userInput;
+                    }
                     
                 }
-                else if(userInput === '' && /[\*\/+-]/.test(n)){
-                    userInput = PreviousResult + n;
-                    display.value = userInput;
-                }
-                else{
-                    userInput += n;
-                    display.value = userInput;
-                    dotUsed = false;
-                }
-            }
+                // else{
+                //     userInput += n;
+                //     display.value = userInput;
+                // }
+            //}
             //Numbers
-            else if(n !== '.'){
+            else{
                 userInput += n;
                 display.value = userInput;
             }
@@ -113,6 +109,18 @@ function calculator(userInput){
         signs = ['+'];
     }
     
+    //First calculate factorials. (----CAN'T UNDERSTAND----this calculation is not inside the next for loop because then incase of -5!(suppose) it will multiply -1 first even if I do the factorial first!!)
+    for(let i = 0; i < numbers.length; i++){
+        //Factorial
+        console.log(numbers[i])
+        if(/!/.test(numbers[i])){
+            const x = numbers[i].slice(0, -1);
+            numbers[i] = x;
+            console.log(Number(numbers[i])+'!');
+            numbers[i] = factorial(numbers[i]);
+            console.log(numbers, signs);
+        }
+    }
 
     //First calculate the multiplies and divisions
     for(let i=0;i<numbers.length;i++){
@@ -146,14 +154,47 @@ function calculator(userInput){
 
 function factorial(n){
     n = Number(n);
-    if(!Number.isInteger(n)){
-        return false;
-    }
 
     let fact = 1;
     for(let i = 1; i <= n; i++){
         fact *= i;
     }
+    console.log(fact);
     return fact;
 }
 
+
+'2.'
+'2...'
+
+'*2'
+'2*'
+'**/'
+
+'!2'
+'*! !!'
+'2.1!'
+function isError(userInput){
+    const e1 = /\.$/;
+    const e2 = /\.(\d+)?\./;
+
+    const e3 = /^[\*\/]/;
+    const e4 = /[\*\/+-]$/;
+    const e5 = /[\*\/+-]{2,}/;
+
+    const e6 = /^!/;
+    const e7 = /[\*\/!+-]!/;
+    const e8 = /\.(\d+)?!/;
+
+    const errors = [e1, e2, e3, e4, e5, e6, e7, e8];
+
+    for(let i = 0; i < errors.length; i++){
+        error = errors[i];
+        if(error.test(userInput)) {
+            console.log(error);    
+            return true;
+        }
+    }
+    return false;
+
+}

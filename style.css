@@ -59,7 +59,7 @@ box-shadow:  6px 6px 12px #212121,
     color: #FFE400;
     
     font-family: 'Play', sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     letter-spacing: 2px;
 }   
 #display{
@@ -79,4 +79,5 @@ box-shadow:  6px 6px 12px #212121,
 #result_display{
     float: right;
     padding: .3rem;
+    font-size: 1.5rem;
 }
