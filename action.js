@@ -20,7 +20,7 @@ document.onload =  display.value = 'Hi!';
             if(userInput == ''){
                 display.value = 'Hi!';
             }
-            else if(userInput[0].match(/[\d+-]/) && /[\d]/.test(userInput[userInput.length-1])){
+            else if(userInput[0].match(/[\d+-]/) && /[\d!]/.test(userInput[userInput.length-1])){
                 let result = calculator(userInput);
                 resultDisplay.innerText = result;
                 PreviousResult = result;
@@ -113,8 +113,20 @@ function calculator(userInput){
         signs = ['+'];
     }
     
+    //First calculate factorials. (----CAN'T UNDERSTAND----this calculation is not inside the next for loop because then incase of -5!(suppose) it will multiply -1 first even if I do the factorial first!!)
+    for(let i = 0; i < numbers.length; i++){
+        //Factorial
+        console.log(numbers[i])
+        if(/!/.test(numbers[i])){
+            const x = numbers[i].slice(0, -1);
+            numbers[i] = x;
+            console.log(Number(numbers[i])+'!');
+            numbers[i] = factorial(numbers[i]);
+            console.log(numbers, signs);
+        }
+    }
 
-    //First calculate the multiplies and divisions
+    //2nd - calculate the multiplies and divisions
     for(let i=0;i<numbers.length;i++){
         
         //if a number is negative
@@ -134,7 +146,7 @@ function calculator(userInput){
     }
     console.log(numbers);
 
-    //Add all the numbers
+    //3rd - Add all the numbers
     sum = 0;
     for(let i = 0; i < numbers.length; i++){
         sum += Number(numbers[i]);
