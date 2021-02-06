@@ -39,33 +39,24 @@ document.onload =  display.value = 'Hi!';
         }
         //For pi
         else if(n === 'π'){
-            // userInput += '*'+n;
-            // display.value = userInput;
+            display.value += n;
+            userInput += 3.14159;
+        }
+        //For AC
+        else if(n === 'AC'){
+            userInput = '';
+            display.value = 'Hi!';
+            resultDisplay.innerText = 0;
+            PreviousResult = 0;
         }
 
         //for numbers, dot and symbols
         else if(event.target.classList[0] === "btn"){
-            //dot
-
-            //symbols
-            //if(event.target.classList[1] === 'btnSymbol'){
-                if(userInput === '' && /[\*\/+-]/.test(n)){
-                    if(display.value === ''){
-                        userInput += n;
-                        display.value = userInput;
-                    }
-                    else{
-                        userInput = PreviousResult + n;
-                        display.value = userInput;
-                    }
-                    
-                }
-                // else{
-                //     userInput += n;
-                //     display.value = userInput;
-                // }
-            //}
-            //Numbers
+            //using previous result 
+            if(userInput === '' && /[\*\/+-]/.test(n)){
+                userInput = PreviousResult + n;
+                display.value = userInput;
+            }
             else{
                 userInput += n;
                 display.value = userInput;
@@ -109,7 +100,7 @@ function calculator(userInput){
         signs = ['+'];
     }
     
-    //First calculate factorials. (----CAN'T UNDERSTAND----this calculation is not inside the next for loop because then incase of -5!(suppose) it will multiply -1 first even if I do the factorial first!!)
+    //First calculate factorials. (----CAN'T UNDERSTAND----this calculation is not inside the next for loop because then in case of -5!(suppose) it will multiply -1 first even if I do the factorial first!!)
     for(let i = 0; i < numbers.length; i++){
         //Factorial
         console.log(numbers[i])
@@ -140,7 +131,7 @@ function calculator(userInput){
         }
 
     }
-    console.log(numbers);
+    console.log(numbers, signs);
 
     //Add all the numbers
     sum = 0;

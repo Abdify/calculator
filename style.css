@@ -30,7 +30,7 @@ body{
     grid-column: 3/5;
 }
 .btnEqual{
-    grid-column: 1/5;
+    grid-column: 2/5;
 }
 .btnBackSpace{
     grid-column: 3/5;
@@ -79,5 +79,5 @@ box-shadow:  6px 6px 12px #212121,
 #result_display{
     float: right;
     padding: .3rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
